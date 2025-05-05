@@ -72,7 +72,47 @@ Um projeto modelo de e-commerce, utilizando serviços fracionados com o intuito 
 
 ---
 
-## ✅ 6. Analytics Service (`analytics-service`)
+## ⚙️ 6. Integração com gRPC
+
+### 📦 6.1 Product Service - gRPC Server
+
+**Objetivo:** Oferecer métodos para que o `order-service` consulte produtos internamente via gRPC.
+
+- [ ] Implementar servidor gRPC com os seguintes métodos:
+  - `GetProductById(product_id)`
+  - `CheckStock(product_id, quantity)`
+- [ ] Validar integração com banco de dados
+- [ ] Criar testes unitários para os handlers
+- [ ] Expor o serviço na porta interna (ex: 50051)
+- [ ] Incluir healthcheck (opcional)
+
+### 👤 6.2 User Service - gRPC Server
+
+**Objetivo:** Permitir que o `order-service` valide informações do usuário.
+
+- [ ] Implementar servidor gRPC com métodos como:
+  - `GetUserById(user_id)`
+  - `IsUserActive(user_id)`
+- [ ] Conectar com banco PostgreSQL
+- [ ] Criar testes unitários
+- [ ] Incluir configuração da porta gRPC no `.env`
+
+### 🧾 6.3 Order Service - gRPC Client
+
+**Objetivo:** Consumir os serviços gRPC do `product-service` e `user-service`.
+
+- [ ] Instalar gRPC client libs: `grpcio`, `grpcio-tools`
+- [ ] Configurar cliente gRPC para:
+  - `ProductServiceStub`
+  - `UserServiceStub`
+- [ ] Chamar `GetProductById` antes de criar o pedido
+- [ ] Chamar `IsUserActive` para validar usuário
+- [ ] Implementar tratamento de erro e timeouts
+- [ ] Criar testes de integração (mock gRPC)
+
+---
+
+## ✅ 7. Analytics Service (`analytics-service`)
 
 **Objetivo:** Coletar e armazenar dados de eventos para relatórios.
 
@@ -83,9 +123,18 @@ Um projeto modelo de e-commerce, utilizando serviços fracionados com o intuito 
 - [ ] Agregar dados por período (diário/semanal/mensal)
 - [ ] Criar painel básico com Streamlit (opcional)
 
+### 📦 7.1 Order Service → Kafka
+
+**Objetivo:** Publicar eventos quando um novo pedido é criado.
+
+- [ ] Instalar biblioteca Kafka (ex: `aiokafka` ou `confluent-kafka`)
+- [ ] Criar produtor Kafka assíncrono
+- [ ] Definir tópico: `order.created`
+- [ ] Criar esquema do evento (JSON ou Avro):
+
 ---
 
-## ✅ 7. Redis Cache (Product Service)
+## ✅ 8. Redis Cache (Product Service)
 
 **Objetivo:** Melhorar performance do serviço de produtos.
 
